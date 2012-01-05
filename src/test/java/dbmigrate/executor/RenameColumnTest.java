@@ -5,9 +5,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import junit.framework.TestCase;
-
-import org.postgresql.util.PSQLException;
-
 import dbmigrate.model.db.Column;
 import dbmigrate.model.db.DbConnector;
 import dbmigrate.model.db.IColumn;
@@ -16,7 +13,6 @@ import dbmigrate.model.db.Table;
 import dbmigrate.model.db.TypeEnum;
 import dbmigrate.model.operation.AddColumnOperationDescriptor;
 import dbmigrate.model.operation.DropColumnOperationDescriptor;
-import dbmigrate.model.operation.DropTableOperationDescriptor;
 import dbmigrate.model.operation.RenameColumnOperationDescriptor;
 
 public class RenameColumnTest extends TestCase {
@@ -35,8 +31,12 @@ public class RenameColumnTest extends TestCase {
 
 	@Override
 	public void setUp() {
-		dbcon = new DbConnector().getConnection("postgresql",
-				"149.156.205.250:13833", "dbmigrate", "dbmigrate", "dbmigrate");
+		try {
+			dbcon = new DbConnector().getConnection("postgresql", "149.156.205.250:13833", "dbmigrate", "dbmigrate", "dbmigrate");
+		} catch (Exception e) {
+			System.out.println("Connection to database failed.");
+			e.printStackTrace();
+		}
 
 		String oldName = getColName();
 		String newName = oldName + "new";
@@ -54,8 +54,7 @@ public class RenameColumnTest extends TestCase {
 
 		table.setColumns(Arrays.asList(new IColumn[] { oldCol }));
 
-		AddColumnOperationDescriptor aco = new AddColumnOperationDescriptor(
-				sampleTable, oldCol);
+		AddColumnOperationDescriptor aco = new AddColumnOperationDescriptor(sampleTable, oldCol);
 		AddColumnExecutor ace = new AddColumnExecutor(dbcon);
 		System.out.println(ace.createSql(aco));
 		try {
@@ -69,8 +68,7 @@ public class RenameColumnTest extends TestCase {
 
 	public void testRenameColumn() {
 
-		RenameColumnOperationDescriptor rdesc = new RenameColumnOperationDescriptor(
-				table, oldCol, newCol);
+		RenameColumnOperationDescriptor rdesc = new RenameColumnOperationDescriptor(table, oldCol, newCol);
 		RenameColumnExecutor rexec = new RenameColumnExecutor(dbcon);
 
 		System.out.println(rexec.createSql(rdesc));
@@ -84,8 +82,7 @@ public class RenameColumnTest extends TestCase {
 	}
 
 	public void tearDown() {
-		DropColumnOperationDescriptor dco = new DropColumnOperationDescriptor(
-				table, newCol);
+		DropColumnOperationDescriptor dco = new DropColumnOperationDescriptor(table, newCol);
 		DropColumnExecutor dce = new DropColumnExecutor(dbcon);
 
 		System.out.println(dce.createSql(dco));
