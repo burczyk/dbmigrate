@@ -49,7 +49,7 @@ public class ChangeColumnExecutorTest extends TestCase {
 
 		ChangeColumnExecutor executor = new ChangeColumnExecutor(null);
 		System.out.println(executor.createSql(operation));
-		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 VARCHAR (255) NOT NULL;UPDATE \"tableName\" SET ola_varchar_255='Kamil' ;", executor.createSql(operation));
+		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 VARCHAR (255) NOT NULL;UPDATE \"tableName\" SET ola_varchar_255='Kamil';", executor.createSql(operation).trim());
 
 	}
 
@@ -71,7 +71,7 @@ public class ChangeColumnExecutorTest extends TestCase {
 
 		ChangeColumnExecutor executor = new ChangeColumnExecutor(null);
 		System.out.println(executor.createSql(operation));
-		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 BINARY NOT NULL;UPDATE \"tableName\" SET ola_varchar_255=B'01010101' ;", executor.createSql(operation).trim());
+		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 BINARY NOT NULL;UPDATE \"tableName\" SET ola_varchar_255=B'01010101';", executor.createSql(operation).trim());
 
 	}
 
@@ -93,7 +93,7 @@ public class ChangeColumnExecutorTest extends TestCase {
 
 		ChangeColumnExecutor executor = new ChangeColumnExecutor(null);
 		System.out.println(executor.createSql(operation));
-		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 INT NOT NULL;UPDATE \"tableName\" SET ola_varchar_255=69 ;", executor.createSql(operation).trim());
+		assertEquals("ALTER TABLE \"tableName\" CHANGE oldColumnName ola_varchar_255 INT NOT NULL;UPDATE \"tableName\" SET ola_varchar_255=69;", executor.createSql(operation).trim());
 
 	}
 }
